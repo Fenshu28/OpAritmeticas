@@ -1,0 +1,4 @@
+lib/*
+backup/*
+*.class
+*.exe

@@ -1,0 +1,174 @@
+object Form1: TForm1
+  Left = 352
+  Height = 434
+  Top = 32
+  Width = 1034
+  BorderStyle = bsDialog
+  Caption = 'Operaciones aritmeticas'
+  ClientHeight = 434
+  ClientWidth = 1034
+  DesignTimePPI = 120
+  Position = poDesktopCenter
+  object Panel1: TPanel
+    Left = 12
+    Height = 262
+    Top = 116
+    Width = 1015
+    Caption = 'Carga tus imagenes'
+    ClientHeight = 262
+    ClientWidth = 1015
+    Color = clInfoBk
+    ParentBackground = False
+    ParentColor = False
+    TabOrder = 6
+    object Image2: TImage
+      Left = 360
+      Height = 250
+      Top = 8
+      Width = 300
+    end
+    object Image1: TImage
+      Left = 8
+      Height = 250
+      Top = 8
+      Width = 300
+    end
+    object Image3: TImage
+      Left = 712
+      Height = 250
+      Top = 8
+      Width = 300
+    end
+    object lbOperacion: TLabel
+      Left = 328
+      Height = 20
+      Top = 128
+      Width = 10
+      Caption = '+'
+    end
+    object Label2: TLabel
+      Left = 680
+      Height = 20
+      Top = 128
+      Width = 10
+      Caption = '='
+    end
+  end
+  object btnCargImg1: TButton
+    Left = 119
+    Height = 38
+    Top = 384
+    Width = 94
+    Caption = 'Cargar img1'
+    TabOrder = 0
+  end
+  object btnCargImg2: TButton
+    Left = 471
+    Height = 38
+    Top = 384
+    Width = 94
+    Caption = 'Cargar img2'
+    TabOrder = 1
+  end
+  object btnOperar: TButton
+    Left = 656
+    Height = 38
+    Top = 384
+    Width = 94
+    Caption = 'Operar'
+    TabOrder = 2
+  end
+  object btnDescarga: TButton
+    Left = 823
+    Height = 38
+    Top = 384
+    Width = 94
+    Caption = 'Descargar'
+    TabOrder = 3
+  end
+  object GroupBox1: TGroupBox
+    Left = 16
+    Height = 96
+    Top = 8
+    Width = 488
+    Caption = 'Operaciones de reflexión'
+    ClientHeight = 71
+    ClientWidth = 484
+    TabOrder = 4
+    object cbReflexion: TComboBox
+      Left = 8
+      Height = 28
+      Top = 32
+      Width = 125
+      ItemHeight = 20
+      ItemIndex = 0
+      Items.Strings = (
+        'img1'
+        'img2'
+        'result'
+      )
+      ReadOnly = True
+      Style = csDropDownList
+      TabOrder = 0
+      Text = 'img1'
+    end
+    object Label3: TLabel
+      Left = 8
+      Height = 20
+      Top = 0
+      Width = 103
+      Caption = 'Elige la imagen'
+    end
+    object Label4: TLabel
+      Left = 168
+      Height = 20
+      Top = 0
+      Width = 103
+      Caption = '¿Qué reflexión?'
+    end
+    object btnVertical: TButton
+      Left = 168
+      Height = 31
+      Top = 29
+      Width = 94
+      Caption = 'Vertical'
+      TabOrder = 1
+    end
+    object btnHorizontal: TButton
+      Left = 272
+      Height = 31
+      Top = 29
+      Width = 94
+      Caption = 'Horizontal'
+      TabOrder = 2
+    end
+    object btnDoble: TButton
+      Left = 376
+      Height = 31
+      Top = 29
+      Width = 94
+      Caption = 'Doble'
+      TabOrder = 3
+    end
+  end
+  object cbOpera: TComboBox
+    Left = 280
+    Height = 28
+    Top = 392
+    Width = 125
+    ItemHeight = 20
+    ItemIndex = 0
+    Items.Strings = (
+      'Suma1'
+      'Suma2'
+      'Resta1'
+      'Resta2'
+      'Resta3'
+    )
+    ReadOnly = True
+    Style = csDropDownList
+    TabOrder = 5
+    Text = 'Suma1'
+    OnChange = cbOperaChange
+  end
+end
