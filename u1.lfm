@@ -29,18 +29,21 @@ object Form1: TForm1
       Height = 250
       Top = 8
       Width = 300
+      Stretch = True
     end
     object Image1: TImage
       Left = 8
       Height = 250
       Top = 8
       Width = 300
+      Stretch = True
     end
     object Image3: TImage
       Left = 712
       Height = 250
       Top = 8
       Width = 300
+      Stretch = True
     end
     object lbOperacion: TLabel
       Left = 328
