@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  ComboEx, StdCtrls, StrUtils;
+  ComboEx, StdCtrls, ExtDlgs, StrUtils, FPReadJPEG, FPReadPNG, FPWriteJPEG, FPWritePNG, // (O simplemente 'JPEG', 'PNG' dependiendo de tu versión de Lazarus)
+  uLogica;
 
 type
 
@@ -31,9 +32,15 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Panel1: TPanel;
+    OpenPictureDialog1: TOpenPictureDialog; // <--- Asegúrate de poner este componente
+    procedure btnCargImg1Click(Sender: TObject);
+    procedure btnCargImg2Click(Sender: TObject);
     procedure cbOperaChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
-
+    // Instancia de tu gestor lógico
+    Gestor: TGestorImagenes;
   public
 
   end;
@@ -47,6 +54,44 @@ implementation
 
 { TForm1 }
 
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  // Inicializamos la lógica al arrancar
+  Gestor := TGestorImagenes.Create;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  // Liberamos memoria al cerrar
+  if Assigned(Gestor) then Gestor.Free;
+end;
+
+// Cargar Imagen 1
+procedure TForm1.btnCargImg1Click(Sender: TObject);
+begin
+  // Verificación de seguridad
+  if not Assigned(Gestor) then
+  begin
+    ShowMessage('Error: El Gestor no se inicializó. Verifica el evento OnCreate del Formulario.');
+    Exit;
+  end;
+
+  if OpenPictureDialog1.Execute then
+  begin
+    Gestor.CargarImagen(0, OpenPictureDialog1.FileName, Image1);
+  end;
+end;
+
+// Cargar Imagen 2
+procedure TForm1.btnCargImg2Click(Sender: TObject);
+begin
+  if OpenPictureDialog1.Execute then
+  begin
+    // Índice 1 = Imagen 2
+    Gestor.CargarImagen(1, OpenPictureDialog1.FileName, Image2);
+  end;
+end;
+
 procedure TForm1.cbOperaChange(Sender: TObject);
 begin
   if AnsiStartsText('Suma', cbOpera.Text) then
@@ -56,4 +101,3 @@ begin
 end;
 
 end.
-

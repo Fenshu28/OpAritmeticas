@@ -41,6 +41,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
+      <Unit>
+        <Filename Value="ulogica.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uLogica"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
