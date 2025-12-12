@@ -36,6 +36,7 @@ type
     procedure btnCargImg1Click(Sender: TObject);
     procedure btnCargImg2Click(Sender: TObject);
     procedure cbOperaChange(Sender: TObject);
+    procedure btnOperarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -89,6 +90,17 @@ begin
   begin
     // Índice 1 = Imagen 2
     Gestor.CargarImagen(1, OpenPictureDialog1.FileName, Image2);
+  end;
+end;
+
+procedure TForm1.btnOperarClick(Sender: TObject);
+begin
+  if not Assigned(Gestor) then Exit;
+
+  // Verificamos cuál operación está seleccionada
+  if AnsiStartsText('Suma', cbOpera.Text) then
+  begin
+    Gestor.SumaImagenes(Image3);
   end;
 end;
 

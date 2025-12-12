@@ -85,6 +85,7 @@ object Form1: TForm1
     Width = 94
     Caption = 'Operar'
     TabOrder = 2
+    OnClick = btnOperarClick
   end
   object btnDescarga: TButton
     Left = 823

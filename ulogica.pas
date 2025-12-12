@@ -32,6 +32,7 @@ type
     // Carga robusta: Acepta cualquier formato y lo convierte a RGB
     procedure CargarImagen(Index: Integer; RutaArchivo: String; Destino: TImage);
     procedure ActualizarTImage(Index: Integer; Destino: TImage);
+    procedure SumaImagenes(Destino: TImage);
 
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
@@ -150,6 +151,30 @@ begin
   finally
     Bmp.Free;
   end;
+end;
+
+procedure TGestorImagenes.SumaImagenes(Destino: TImage);
+var
+  x, y: Integer;
+begin
+  // Verificamos que existan dimensiones base
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  // Redimensionamos la memoria de resultado (Index 2)
+  RedimensionarMatriz(2, FAncho, FAlto);
+
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+       // Suma con normalización (promedio)
+       FMemorias[2][x, y].R := (Integer(FMemorias[0][x, y].R) + Integer(FMemorias[1][x, y].R)) div 2;
+       FMemorias[2][x, y].G := (Integer(FMemorias[0][x, y].G) + Integer(FMemorias[1][x, y].G)) div 2;
+       FMemorias[2][x, y].B := (Integer(FMemorias[0][x, y].B) + Integer(FMemorias[1][x, y].B)) div 2;
+    end;
+  end;
+
+  ActualizarTImage(2, Destino);
 end;
 
 end.
