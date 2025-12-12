@@ -37,11 +37,15 @@ type
     procedure btnCargImg2Click(Sender: TObject);
     procedure cbOperaChange(Sender: TObject);
     procedure btnOperarClick(Sender: TObject);
+    procedure btnVerticalClick(Sender: TObject);
+    procedure btnHorizontalClick(Sender: TObject);
+    procedure btnDobleClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
     // Instancia de tu gestor lógico
     Gestor: TGestorImagenes;
+    function ObtenerImagenObjetivo(Index: Integer): TImage;
   public
 
   end;
@@ -61,6 +65,9 @@ begin
   Gestor := TGestorImagenes.Create;
   // Asignación manual para asegurar que funcione incluso si el LFM no se recarga
   btnOperar.OnClick := @btnOperarClick;
+  btnVertical.OnClick := @btnVerticalClick;
+  btnHorizontal.OnClick := @btnHorizontalClick;
+  btnDoble.OnClick := @btnDobleClick;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -130,6 +137,64 @@ begin
      lbOperacion.Caption:= '+'
   else
       lbOperacion.Caption:='-';
+end;
+
+function TForm1.ObtenerImagenObjetivo(Index: Integer): TImage;
+begin
+  Result := nil;
+  case Index of
+    0: Result := Image1;
+    1: Result := Image2;
+    2: Result := Image3;
+  end;
+end;
+
+procedure TForm1.btnVerticalClick(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if not Assigned(Gestor) then Exit;
+  Idx := cbReflexion.ItemIndex;
+  
+  if (Idx < 0) or (Idx > 2) then
+  begin
+    ShowMessage('Selecciona una imagen válida');
+    Exit;
+  end;
+
+  Gestor.ReflexionVertical(Idx, ObtenerImagenObjetivo(Idx));
+end;
+
+procedure TForm1.btnHorizontalClick(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if not Assigned(Gestor) then Exit;
+  Idx := cbReflexion.ItemIndex;
+  
+  if (Idx < 0) or (Idx > 2) then
+  begin
+    ShowMessage('Selecciona una imagen válida');
+    Exit;
+  end;
+  
+  Gestor.ReflexionHorizontal(Idx, ObtenerImagenObjetivo(Idx));
+end;
+
+procedure TForm1.btnDobleClick(Sender: TObject);
+var
+  Idx: Integer;
+begin
+  if not Assigned(Gestor) then Exit;
+  Idx := cbReflexion.ItemIndex;
+  
+  if (Idx < 0) or (Idx > 2) then
+  begin
+    ShowMessage('Selecciona una imagen válida');
+    Exit;
+  end;
+  
+  Gestor.ReflexionDoble(Idx, ObtenerImagenObjetivo(Idx));
 end;
 
 end.

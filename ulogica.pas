@@ -37,6 +37,11 @@ type
     procedure RestaImagenes1(Destino: TImage);
     procedure RestaImagenes2(Destino: TImage);
     procedure RestaImagenes3(Destino: TImage);
+    
+    // Reflexiones
+    procedure ReflexionHorizontal(Index: Integer; Destino: TImage);
+    procedure ReflexionVertical(Index: Integer; Destino: TImage);
+    procedure ReflexionDoble(Index: Integer; Destino: TImage);
 
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
@@ -296,6 +301,64 @@ begin
   end;
 
   ActualizarTImage(2, Destino);
+end;
+
+procedure TGestorImagenes.ReflexionHorizontal(Index: Integer; Destino: TImage);
+var
+  x, y: Integer;
+  Temp: TRGBPixel;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  // Intercambiar columnas: Solo iteramos hasta la mitad del ancho
+  for x := 0 to (FAncho div 2) - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+      Temp := FMemorias[Index][x, y];
+      FMemorias[Index][x, y] := FMemorias[Index][FAncho - 1 - x, y];
+      FMemorias[Index][FAncho - 1 - x, y] := Temp;
+    end;
+  end;
+
+  ActualizarTImage(Index, Destino);
+end;
+
+procedure TGestorImagenes.ReflexionVertical(Index: Integer; Destino: TImage);
+var
+  x, y: Integer;
+  Temp: TRGBPixel;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  // Intercambiar renglones: Solo iteramos hasta la mitad del alto
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to (FAlto div 2) - 1 do
+    begin
+      Temp := FMemorias[Index][x, y];
+      FMemorias[Index][x, y] := FMemorias[Index][x, FAlto - 1 - y];
+      FMemorias[Index][x, FAlto - 1 - y] := Temp;
+    end;
+  end;
+
+  ActualizarTImage(Index, Destino);
+end;
+
+procedure TGestorImagenes.ReflexionDoble(Index: Integer; Destino: TImage);
+begin
+  // Una reflexión doble es equivalente a una horizontal seguida de una vertical
+  // Como ya tenemos los métodos que operan sobre la misma memoria, podemos encadenarlos.
+  // Pero ojo: cada uno llama a ActualizarTImage. Para eficiencia podríamos hacerlo directo, 
+  // pero para reutilización llamaremos a los otros.
+  
+  // Como estamos modificando la memoria 'in-place', el orden no importa para el resultado final.
+  
+  // Nota: Al llamar a ReflexionHorizontal, se actualizará la imagen una vez.
+  // Luego ReflexionVertical actualizará otra vez. Es aceptable.
+  
+  ReflexionHorizontal(Index, Destino);
+  ReflexionVertical(Index, Destino);
 end;
 
 end.
