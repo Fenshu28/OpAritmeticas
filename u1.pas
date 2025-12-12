@@ -40,6 +40,8 @@ type
     procedure btnVerticalClick(Sender: TObject);
     procedure btnHorizontalClick(Sender: TObject);
     procedure btnDobleClick(Sender: TObject);
+
+    procedure btnDescargaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -67,7 +69,9 @@ begin
   btnOperar.OnClick := @btnOperarClick;
   btnVertical.OnClick := @btnVerticalClick;
   btnHorizontal.OnClick := @btnHorizontalClick;
+
   btnDoble.OnClick := @btnDobleClick;
+  btnDescarga.OnClick := @btnDescargaClick;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -88,7 +92,12 @@ begin
 
   if OpenPictureDialog1.Execute then
   begin
-    Gestor.CargarImagen(0, OpenPictureDialog1.FileName, Image1);
+    Screen.Cursor := crHourGlass;
+    try
+      Gestor.CargarImagen(0, OpenPictureDialog1.FileName, Image1);
+    finally
+      Screen.Cursor := crDefault;
+    end;
   end;
 end;
 
@@ -97,8 +106,13 @@ procedure TForm1.btnCargImg2Click(Sender: TObject);
 begin
   if OpenPictureDialog1.Execute then
   begin
-    // Índice 1 = Imagen 2
-    Gestor.CargarImagen(1, OpenPictureDialog1.FileName, Image2);
+    Screen.Cursor := crHourGlass;
+    try
+      // Índice 1 = Imagen 2
+      Gestor.CargarImagen(1, OpenPictureDialog1.FileName, Image2);
+    finally
+      Screen.Cursor := crDefault;
+    end;
   end;
 end;
 
@@ -108,26 +122,31 @@ begin
   
   // ShowMessage('Operando...'); // Debug
 
-  // Verificamos cuál operación está seleccionada
-  if AnsiStartsText('Suma1', cbOpera.Text) then
-  begin
-    Gestor.SumaImagenes(Image3);
-  end
-  else if AnsiStartsText('Suma2', cbOpera.Text) then
-  begin
-    Gestor.SumaImagenes2(Image3);
-  end
-  else if AnsiStartsText('Resta1', cbOpera.Text) then
-  begin
-    Gestor.RestaImagenes1(Image3);
-  end
-  else if AnsiStartsText('Resta2', cbOpera.Text) then
-  begin
-    Gestor.RestaImagenes2(Image3);
-  end
-  else if AnsiStartsText('Resta3', cbOpera.Text) then
-  begin
-    Gestor.RestaImagenes3(Image3);
+  Screen.Cursor := crHourGlass;
+  try
+    // Verificamos cuál operación está seleccionada
+    if AnsiStartsText('Suma1', cbOpera.Text) then
+    begin
+      Gestor.SumaImagenes(Image3);
+    end
+    else if AnsiStartsText('Suma2', cbOpera.Text) then
+    begin
+      Gestor.SumaImagenes2(Image3);
+    end
+    else if AnsiStartsText('Resta1', cbOpera.Text) then
+    begin
+      Gestor.RestaImagenes1(Image3);
+    end
+    else if AnsiStartsText('Resta2', cbOpera.Text) then
+    begin
+      Gestor.RestaImagenes2(Image3);
+    end
+    else if AnsiStartsText('Resta3', cbOpera.Text) then
+    begin
+      Gestor.RestaImagenes3(Image3);
+    end;
+  finally
+    Screen.Cursor := crDefault;
   end;
 end;
 
@@ -162,7 +181,12 @@ begin
     Exit;
   end;
 
-  Gestor.ReflexionVertical(Idx, ObtenerImagenObjetivo(Idx));
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.ReflexionVertical(Idx, ObtenerImagenObjetivo(Idx));
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TForm1.btnHorizontalClick(Sender: TObject);
@@ -177,8 +201,13 @@ begin
     ShowMessage('Selecciona una imagen válida');
     Exit;
   end;
-
-  Gestor.ReflexionHorizontal(Idx, ObtenerImagenObjetivo(Idx));
+  
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.ReflexionHorizontal(Idx, ObtenerImagenObjetivo(Idx));
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TForm1.btnDobleClick(Sender: TObject);
@@ -193,8 +222,46 @@ begin
     ShowMessage('Selecciona una imagen válida');
     Exit;
   end;
+  
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.ReflexionDoble(Idx, ObtenerImagenObjetivo(Idx));
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
 
-  Gestor.ReflexionDoble(Idx, ObtenerImagenObjetivo(Idx));
+procedure TForm1.btnDescargaClick(Sender: TObject);
+var
+  SaveDlg: TSavePictureDialog;
+begin
+  // Validar si hay imagen en Image3
+  if (Image3.Picture.Graphic = nil) or (Image3.Picture.Width = 0) then
+  begin
+    ShowMessage('No hay resultado para descargar. Realiza una operación primero.');
+    Exit;
+  end;
+
+  SaveDlg := TSavePictureDialog.Create(nil);
+  try
+    SaveDlg.Title := 'Guardar Resultado';
+    SaveDlg.Filter := 'Imagen PNG|*.png|Imagen JPEG|*.jpg';
+    SaveDlg.DefaultExt := 'png';
+    SaveDlg.FileName := 'resultado';
+
+    if SaveDlg.Execute then
+    begin
+       try
+         Image3.Picture.SaveToFile(SaveDlg.FileName);
+         ShowMessage('Imagen guardada exitosamente.');
+       except
+         on E: Exception do
+           ShowMessage('Error al guardar: ' + E.Message);
+       end;
+    end;
+  finally
+    SaveDlg.Free;
+  end;
 end;
 
 end.
