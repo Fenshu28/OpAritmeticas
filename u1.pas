@@ -59,6 +59,8 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   // Inicializamos la lógica al arrancar
   Gestor := TGestorImagenes.Create;
+  // Asignación manual para asegurar que funcione incluso si el LFM no se recarga
+  btnOperar.OnClick := @btnOperarClick;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -96,6 +98,8 @@ end;
 procedure TForm1.btnOperarClick(Sender: TObject);
 begin
   if not Assigned(Gestor) then Exit;
+  
+  ShowMessage('Operando...'); // Debug
 
   // Verificamos cuál operación está seleccionada
   if AnsiStartsText('Suma', cbOpera.Text) then
