@@ -33,6 +33,7 @@ type
     procedure CargarImagen(Index: Integer; RutaArchivo: String; Destino: TImage);
     procedure ActualizarTImage(Index: Integer; Destino: TImage);
     procedure SumaImagenes(Destino: TImage);
+    procedure SumaImagenes2(Destino: TImage);
 
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
@@ -171,6 +172,41 @@ begin
        FMemorias[2][x, y].R := (Integer(FMemorias[0][x, y].R) + Integer(FMemorias[1][x, y].R)) div 2;
        FMemorias[2][x, y].G := (Integer(FMemorias[0][x, y].G) + Integer(FMemorias[1][x, y].G)) div 2;
        FMemorias[2][x, y].B := (Integer(FMemorias[0][x, y].B) + Integer(FMemorias[1][x, y].B)) div 2;
+    end;
+  end;
+
+  ActualizarTImage(2, Destino);
+end;
+
+procedure TGestorImagenes.SumaImagenes2(Destino: TImage);
+var
+  x, y: Integer;
+  R, G, B: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  RedimensionarMatriz(2, FAncho, FAlto);
+
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+       // Suma 2: FARS (Acotación rango superior)
+       // Si x + y < 255 -> x + y
+       // Si x + y >= 255 -> 255
+       
+       R := Integer(FMemorias[0][x, y].R) + Integer(FMemorias[1][x, y].R);
+       if R > 255 then R := 255;
+       
+       G := Integer(FMemorias[0][x, y].G) + Integer(FMemorias[1][x, y].G);
+       if G > 255 then G := 255;
+       
+       B := Integer(FMemorias[0][x, y].B) + Integer(FMemorias[1][x, y].B);
+       if B > 255 then B := 255;
+
+       FMemorias[2][x, y].R := Byte(R);
+       FMemorias[2][x, y].G := Byte(G);
+       FMemorias[2][x, y].B := Byte(B);
     end;
   end;
 

@@ -102,9 +102,13 @@ begin
   ShowMessage('Operando...'); // Debug
 
   // Verificamos cuál operación está seleccionada
-  if AnsiStartsText('Suma', cbOpera.Text) then
+  if AnsiStartsText('Suma1', cbOpera.Text) then
   begin
     Gestor.SumaImagenes(Image3);
+  end
+  else if AnsiStartsText('Suma2', cbOpera.Text) then
+  begin
+    Gestor.SumaImagenes2(Image3);
   end;
 end;
 
