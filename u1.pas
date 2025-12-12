@@ -24,6 +24,10 @@ type
     cbReflexion: TComboBox;
     cbOpera: TComboBox;
     GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    btnSwap: TButton;
+    btnCopyCA: TButton;
+    btnCopyCB: TButton;
     Image1: TImage;
     Image2: TImage;
     Image3: TImage;
@@ -40,8 +44,11 @@ type
     procedure btnVerticalClick(Sender: TObject);
     procedure btnHorizontalClick(Sender: TObject);
     procedure btnDobleClick(Sender: TObject);
-
     procedure btnDescargaClick(Sender: TObject);
+    // Nuevos eventos
+    procedure btnSwapClick(Sender: TObject);
+    procedure btnCopyCAClick(Sender: TObject);
+    procedure btnCopyCBClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -65,13 +72,17 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   // Inicializamos la lógica al arrancar
   Gestor := TGestorImagenes.Create;
-  // Asignación manual para asegurar que funcione incluso si el LFM no se recarga
+  // Asignación manual para asegurar que funcionamiento
   btnOperar.OnClick := @btnOperarClick;
   btnVertical.OnClick := @btnVerticalClick;
   btnHorizontal.OnClick := @btnHorizontalClick;
-
   btnDoble.OnClick := @btnDobleClick;
   btnDescarga.OnClick := @btnDescargaClick;
+  
+  // Nuevos botones
+  btnSwap.OnClick := @btnSwapClick;
+  btnCopyCA.OnClick := @btnCopyCAClick;
+  btnCopyCB.OnClick := @btnCopyCBClick;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -261,6 +272,54 @@ begin
     end;
   finally
     SaveDlg.Free;
+  end;
+end;
+
+procedure TForm1.btnSwapClick(Sender: TObject);
+begin
+  if not Assigned(Gestor) then Exit;
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.Intercambiar(0, 1, Image1, Image2);
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TForm1.btnCopyCAClick(Sender: TObject);
+begin
+  if not Assigned(Gestor) then Exit;
+  
+  // Validamos si hay resultado (Index 2)
+  if (Image3.Picture.Graphic = nil) then 
+  begin
+    ShowMessage('No hay imagen en C (Resultado) para copiar.');
+    Exit;
+  end;
+
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.Copiar(2, 0, Image1);
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TForm1.btnCopyCBClick(Sender: TObject);
+begin
+  if not Assigned(Gestor) then Exit;
+
+  if (Image3.Picture.Graphic = nil) then 
+  begin
+    ShowMessage('No hay imagen en C (Resultado) para copiar.');
+    Exit;
+  end;
+
+  Screen.Cursor := crHourGlass;
+  try
+    Gestor.Copiar(2, 1, Image2);
+  finally
+    Screen.Cursor := crDefault;
   end;
 end;
 

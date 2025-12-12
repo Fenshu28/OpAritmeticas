@@ -43,6 +43,10 @@ type
     procedure ReflexionVertical(Index: Integer; Destino: TImage);
     procedure ReflexionDoble(Index: Integer; Destino: TImage);
 
+    // Intercambio y Copia
+    procedure Intercambiar(Index1, Index2: Integer; Destino1, Destino2: TImage);
+    procedure Copiar(Origen, Destino: Integer; ObjDestino: TImage);
+
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
     property Memorias: TBancoMemorias read FMemorias;
@@ -359,6 +363,52 @@ begin
   
   ReflexionHorizontal(Index, Destino);
   ReflexionVertical(Index, Destino);
+end;
+
+procedure TGestorImagenes.Intercambiar(Index1, Index2: Integer; Destino1, Destino2: TImage);
+var
+  TempMatriz: TMatrizPixeles;
+  x, y: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+  
+  // Validamos indices
+  if (Index1 < 0) or (Index1 > 2) or (Index2 < 0) or (Index2 > 2) then Exit;
+
+  // Intercambio de punteros de matrices dinámicas es seguro y rápido en Pascal?
+  // Mejor hacemos copia profunda o intercambio elemento a elemento si queremos ser explícitos
+  // O simplemente usamos variable temporal para el array dinámico.
+  // En FPC los arrays dinámicos son punteros con conteo de referencia. Intercambiarlos es rápido.
+  
+  TempMatriz := FMemorias[Index1];
+  FMemorias[Index1] := FMemorias[Index2];
+  FMemorias[Index2] := TempMatriz;
+
+  // Actualizamos visuales
+  ActualizarTImage(Index1, Destino1);
+  ActualizarTImage(Index2, Destino2);
+end;
+
+procedure TGestorImagenes.Copiar(Origen, Destino: Integer; ObjDestino: TImage);
+var
+  x, y: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+  if (Origen < 0) or (Origen > 2) or (Destino < 0) or (Destino > 2) then Exit;
+  
+  // Aseguramos tamaño destino
+  RedimensionarMatriz(Destino, FAncho, FAlto);
+  
+  // Copia profunda
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+      FMemorias[Destino][x, y] := FMemorias[Origen][x, y];
+    end;
+  end;
+
+  ActualizarTImage(Destino, ObjDestino);
 end;
 
 end.

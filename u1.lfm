@@ -160,6 +160,43 @@ object Form1: TForm1
       TabOrder = 3
     end
   end
+  object GroupBox2: TGroupBox
+    Left = 512
+    Height = 96
+    Top = 8
+    Width = 350
+    Caption = 'Gestión de Imágenes'
+    ClientHeight = 71
+    ClientWidth = 346
+    TabOrder = 7
+    object btnSwap: TButton
+      Left = 16
+      Height = 31
+      Top = 16
+      Width = 90
+      Caption = 'A <-> B'
+      TabOrder = 0
+      OnClick = btnSwapClick
+    end
+    object btnCopyCA: TButton
+      Left = 120
+      Height = 31
+      Top = 16
+      Width = 90
+      Caption = 'C -> A'
+      TabOrder = 1
+      OnClick = btnCopyCAClick
+    end
+    object btnCopyCB: TButton
+      Left = 224
+      Height = 31
+      Top = 16
+      Width = 90
+      Caption = 'C -> B'
+      TabOrder = 2
+      OnClick = btnCopyCBClick
+    end
+  end
   object cbOpera: TComboBox
     Left = 280
     Height = 28
