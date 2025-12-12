@@ -34,6 +34,14 @@ class ImageApp:
         tk.Button(self.frame_top, text="Vertical", command=self.on_vertical_click).pack(side=tk.LEFT, padx=5)
         tk.Button(self.frame_top, text="Horizontal", command=self.on_horizontal_click).pack(side=tk.LEFT, padx=5)
         tk.Button(self.frame_top, text="Doble", command=self.on_doble_click).pack(side=tk.LEFT, padx=5)
+
+        # Management Group
+        self.frame_manage = tk.LabelFrame(root, text="Gestión de Imágenes", padx=10, pady=10)
+        self.frame_manage.pack(side=tk.TOP, fill=tk.X, padx=10, pady=5)
+
+        tk.Button(self.frame_manage, text="A <-> B", command=self.on_swap_click).pack(side=tk.LEFT, padx=10)
+        tk.Button(self.frame_manage, text="C -> A", command=self.on_copy_ca_click).pack(side=tk.LEFT, padx=10)
+        tk.Button(self.frame_manage, text="C -> B", command=self.on_copy_cb_click).pack(side=tk.LEFT, padx=10)
         
         # Images Panel
         self.frame_images = tk.Frame(root, bg="#FFFFE0") # Light yellow background like in Pascal
@@ -283,6 +291,33 @@ class ImageApp:
 
     def on_doble_click(self):
         self.perform_reflection("doble")
+
+    # --- Management Logic ---
+
+    def on_swap_click(self):
+        # Swap A and B
+        # Convert None to something swapable? No, just swap references.
+        self.img1_original, self.img2_original = self.img2_original, self.img1_original
+        self.update_display(0)
+        self.update_display(1)
+
+    def on_copy_ca_click(self):
+        # Copy Result (C) to A
+        if not self.img3_result:
+            messagebox.showwarning("Aviso", "No hay resultado (C) para copiar.")
+            return
+        
+        self.img1_original = self.img3_result.copy()
+        self.update_display(0)
+
+    def on_copy_cb_click(self):
+        # Copy Result (C) to B
+        if not self.img3_result:
+            messagebox.showwarning("Aviso", "No hay resultado (C) para copiar.")
+            return
+        
+        self.img2_original = self.img3_result.copy()
+        self.update_display(1)
 
 if __name__ == "__main__":
     try:
