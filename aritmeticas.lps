@@ -20,6 +20,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="95"/>
         <CursorPos X="3" Y="102"/>
         <UsageCount Value="32"/>
@@ -30,7 +31,6 @@
         <Filename Value="ulogica.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uLogica"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="162"/>
         <CursorPos X="27" Y="35"/>
