@@ -18,6 +18,8 @@ class ImageApp:
         self.base_height = 250
         
         # --- GUI Layout ---
+        # Ahora podrias hacer en lazarus primero que pueda cambiar de lugar las imagenes, es simplemente hacer cambio entre matrices de la A a la B, o de la imagen B a la A o de la C a la A, C la B. Lo que no puedo hacer es cambiar la A o B a la C.
+        # C es el resultado.
         
         # Header / Reflections Group
         self.frame_top = tk.LabelFrame(root, text="Operaciones de reflexión", padx=10, pady=10)
