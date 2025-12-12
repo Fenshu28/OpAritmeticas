@@ -55,7 +55,7 @@ end;
 
 procedure TGestorImagenes.CargarImagen(Index: Integer; RutaArchivo: String; Destino: TImage);
 var
-  PicTemp: TPicture; // Usamos TPicture porque es inteligente con los formatos
+  PicTemp: TPicture;
   BmpTemp: TBitmap;
   x, y: Integer;
   ColorTemp: TColor;
@@ -66,16 +66,23 @@ begin
   BmpTemp := TBitmap.Create;
   try
     try
-      // 1. Cargar usando TPicture (detecta JPG, PNG, BMP, etc.)
+      // 1. Cargamos la imagen original (PNG, JPG, etc.)
       PicTemp.LoadFromFile(RutaArchivo);
 
-      // 2. Convertir a Bitmap y forzar formato estándar de 24 bits (RGB)
-      // Esto elimina problemas de canales alfa o formatos indexados
-      BmpTemp.Assign(PicTemp.Graphic);
-      BmpTemp.PixelFormat := pf24bit;
+      // 2. TÉCNICA DE APLANADO (Solución al error de imagen negra)
+      // En lugar de Assign, preparamos un Bitmap blanco y "pintamos" la imagen encima.
+      BmpTemp.SetSize(PicTemp.Width, PicTemp.Height);
+      BmpTemp.PixelFormat := pf24bit; // Forzamos RGB estándar
+
+      // Llenamos de blanco primero (para que las transparencias no sean negras)
+      BmpTemp.Canvas.Brush.Color := clWhite;
+      BmpTemp.Canvas.FillRect(0, 0, PicTemp.Width, PicTemp.Height);
+
+      // Dibujamos la imagen cargada sobre el canvas preparado
+      BmpTemp.Canvas.Draw(0, 0, PicTemp.Graphic);
 
     except
-      ShowMessage('Error al leer la imagen. Asegúrate de que es un archivo de imagen válido.');
+      ShowMessage('Error al procesar la imagen.');
       Exit;
     end;
 
@@ -88,16 +95,16 @@ begin
 
     RedimensionarMatriz(Index, FAncho, FAlto);
 
-    // 3. Copiar a la matriz lógica
+    // Guardamos en la matriz lógica
     for x := 0 to FAncho - 1 do
     begin
       for y := 0 to FAlto - 1 do
       begin
-        // Verificamos límites por si la segunda imagen es más pequeña
+        // Protección de límites
         if (x < BmpTemp.Width) and (y < BmpTemp.Height) then
           ColorTemp := BmpTemp.Canvas.Pixels[x, y]
         else
-          ColorTemp := clBlack; // Relleno negro si sobra espacio
+          ColorTemp := clBlack; // Relleno negro si la imagen es más pequeña que el lienzo
 
         FMemorias[Index][x, y].R := Red(ColorTemp);
         FMemorias[Index][x, y].G := Green(ColorTemp);
@@ -105,7 +112,7 @@ begin
       end;
     end;
 
-    // Actualizamos el componente visual
+    // Actualizamos la vista
     ActualizarTImage(Index, Destino);
 
   finally
