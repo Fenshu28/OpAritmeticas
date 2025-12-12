@@ -35,6 +35,8 @@ type
     procedure SumaImagenes(Destino: TImage);
     procedure SumaImagenes2(Destino: TImage);
     procedure RestaImagenes1(Destino: TImage);
+    procedure RestaImagenes2(Destino: TImage);
+    procedure RestaImagenes3(Destino: TImage);
 
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
@@ -243,6 +245,53 @@ begin
        FMemorias[2][x, y].R := Byte(R);
        FMemorias[2][x, y].G := Byte(G);
        FMemorias[2][x, y].B := Byte(B);
+    end;
+  end;
+
+  ActualizarTImage(2, Destino);
+end;
+
+procedure TGestorImagenes.RestaImagenes2(Destino: TImage);
+var
+  x, y: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  RedimensionarMatriz(2, FAncho, FAlto);
+
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+       // Resta 2: Valor absoluto
+       FMemorias[2][x, y].R := Abs(Integer(FMemorias[0][x, y].R) - Integer(FMemorias[1][x, y].R));
+       FMemorias[2][x, y].G := Abs(Integer(FMemorias[0][x, y].G) - Integer(FMemorias[1][x, y].G));
+       FMemorias[2][x, y].B := Abs(Integer(FMemorias[0][x, y].B) - Integer(FMemorias[1][x, y].B));
+    end;
+  end;
+
+  ActualizarTImage(2, Destino);
+end;
+
+procedure TGestorImagenes.RestaImagenes3(Destino: TImage);
+var
+  x, y: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  RedimensionarMatriz(2, FAncho, FAlto);
+
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+       // Resta 3: Ajuste de media (Norma shift)
+       // Z = 127 + (x - y) / 2
+       // Usamos 127 (aprox de (255)/2)
+       
+       FMemorias[2][x, y].R := 127 + (Integer(FMemorias[0][x, y].R) - Integer(FMemorias[1][x, y].R)) div 2;
+       FMemorias[2][x, y].G := 127 + (Integer(FMemorias[0][x, y].G) - Integer(FMemorias[1][x, y].G)) div 2;
+       FMemorias[2][x, y].B := 127 + (Integer(FMemorias[0][x, y].B) - Integer(FMemorias[1][x, y].B)) div 2;
     end;
   end;
 

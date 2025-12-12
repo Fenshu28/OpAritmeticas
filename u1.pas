@@ -113,6 +113,14 @@ begin
   else if AnsiStartsText('Resta1', cbOpera.Text) then
   begin
     Gestor.RestaImagenes1(Image3);
+  end
+  else if AnsiStartsText('Resta2', cbOpera.Text) then
+  begin
+    Gestor.RestaImagenes2(Image3);
+  end
+  else if AnsiStartsText('Resta3', cbOpera.Text) then
+  begin
+    Gestor.RestaImagenes3(Image3);
   end;
 end;
 
