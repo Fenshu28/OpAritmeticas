@@ -109,6 +109,10 @@ begin
   else if AnsiStartsText('Suma2', cbOpera.Text) then
   begin
     Gestor.SumaImagenes2(Image3);
+  end
+  else if AnsiStartsText('Resta1', cbOpera.Text) then
+  begin
+    Gestor.RestaImagenes1(Image3);
   end;
 end;
 

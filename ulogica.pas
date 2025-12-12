@@ -34,6 +34,7 @@ type
     procedure ActualizarTImage(Index: Integer; Destino: TImage);
     procedure SumaImagenes(Destino: TImage);
     procedure SumaImagenes2(Destino: TImage);
+    procedure RestaImagenes1(Destino: TImage);
 
     property Ancho: Integer read FAncho;
     property Alto: Integer read FAlto;
@@ -203,6 +204,41 @@ begin
        
        B := Integer(FMemorias[0][x, y].B) + Integer(FMemorias[1][x, y].B);
        if B > 255 then B := 255;
+
+       FMemorias[2][x, y].R := Byte(R);
+       FMemorias[2][x, y].G := Byte(G);
+       FMemorias[2][x, y].B := Byte(B);
+    end;
+  end;
+
+  ActualizarTImage(2, Destino);
+end;
+
+
+procedure TGestorImagenes.RestaImagenes1(Destino: TImage);
+var
+  x, y: Integer;
+  R, G, B: Integer;
+begin
+  if (FAncho = 0) or (FAlto = 0) then Exit;
+
+  RedimensionarMatriz(2, FAncho, FAlto);
+
+  for x := 0 to FAncho - 1 do
+  begin
+    for y := 0 to FAlto - 1 do
+    begin
+       // Resta 1: Resta a cero (Rango [0, 255])
+       // Z = x - y si x >= y, sino 0
+       
+       R := Integer(FMemorias[0][x, y].R) - Integer(FMemorias[1][x, y].R);
+       if R < 0 then R := 0;
+       
+       G := Integer(FMemorias[0][x, y].G) - Integer(FMemorias[1][x, y].G);
+       if G < 0 then G := 0;
+       
+       B := Integer(FMemorias[0][x, y].B) - Integer(FMemorias[1][x, y].B);
+       if B < 0 then B := 0;
 
        FMemorias[2][x, y].R := Byte(R);
        FMemorias[2][x, y].G := Byte(G);
