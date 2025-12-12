@@ -106,7 +106,7 @@ procedure TForm1.btnOperarClick(Sender: TObject);
 begin
   if not Assigned(Gestor) then Exit;
   
-  ShowMessage('Operando...'); // Debug
+  // ShowMessage('Operando...'); // Debug
 
   // Verificamos cuál operación está seleccionada
   if AnsiStartsText('Suma1', cbOpera.Text) then
@@ -155,7 +155,7 @@ var
 begin
   if not Assigned(Gestor) then Exit;
   Idx := cbReflexion.ItemIndex;
-  
+
   if (Idx < 0) or (Idx > 2) then
   begin
     ShowMessage('Selecciona una imagen válida');
@@ -171,13 +171,13 @@ var
 begin
   if not Assigned(Gestor) then Exit;
   Idx := cbReflexion.ItemIndex;
-  
+
   if (Idx < 0) or (Idx > 2) then
   begin
     ShowMessage('Selecciona una imagen válida');
     Exit;
   end;
-  
+
   Gestor.ReflexionHorizontal(Idx, ObtenerImagenObjetivo(Idx));
 end;
 
@@ -187,13 +187,13 @@ var
 begin
   if not Assigned(Gestor) then Exit;
   Idx := cbReflexion.ItemIndex;
-  
+
   if (Idx < 0) or (Idx > 2) then
   begin
     ShowMessage('Selecciona una imagen válida');
     Exit;
   end;
-  
+
   Gestor.ReflexionDoble(Idx, ObtenerImagenObjetivo(Idx));
 end;
 
